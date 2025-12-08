@@ -126,7 +126,7 @@ export const ReportPreview: React.FC<Props> = ({ trainer, student, analysis, onB
         { name: 'M. Magra', Antes: parseFloat(getLean(student.initial.weight, student.initial.bodyFat).toFixed(1)), Agora: parseFloat(getLean(student.current.weight, student.current.bodyFat).toFixed(1)) },
         { name: 'Gordura', Antes: parseFloat(getMass(student.initial.weight, student.initial.bodyFat).toFixed(1)), Agora: parseFloat(getMass(student.current.weight, student.current.bodyFat).toFixed(1)) },
     ];
-    const hasPhotos = student.photos.frontBefore || student.photos.frontAfter || student.photos.sideBefore;
+    const hasPhotos = Object.values(student.photos).some(p => !!p);
 
     return (
         <div className="fixed inset-0 bg-slate-950 overflow-y-auto z-50">
@@ -316,24 +316,24 @@ export const ReportPreview: React.FC<Props> = ({ trainer, student, analysis, onB
                                 <div className="p-3 border-b border-slate-100 mb-1">
                                     <h2 className="text-sm font-black uppercase text-slate-800 tracking-tight">Comparativo Visual</h2>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-2">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-2">
                                     {[
                                         { title: 'Frente', b: student.photos.frontBefore, a: student.photos.frontAfter },
                                         { title: 'Lateral', b: student.photos.sideBefore, a: student.photos.sideAfter },
                                         { title: 'Costas', b: student.photos.backBefore, a: student.photos.backAfter }
                                     ].map((view, i) => (
-                                        <div key={i} className="flex flex-col h-[320px] rounded border border-slate-100 bg-slate-50 relative">
-                                            <div className="absolute top-2 left-2 z-10 bg-white/90 text-[9px] font-black text-slate-800 uppercase px-2 py-0.5 rounded shadow-sm">
+                                        <div key={i} className="flex flex-col rounded-lg border border-slate-100 bg-slate-50 relative overflow-hidden">
+                                            <div className="absolute top-2 left-2 z-10 bg-white/90 text-[9px] font-black text-slate-800 uppercase px-2 py-0.5 rounded shadow-sm border border-slate-100">
                                                 {view.title}
                                             </div>
-                                            <div className="flex-1 flex gap-0.5">
-                                                <div className="flex-1 relative">
-                                                    {view.b ? <img src={view.b} className="w-full h-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center text-[9px] text-slate-400">Sem Foto</div>}
-                                                    <div className="absolute bottom-0 inset-x-0 bg-black/50 p-1 text-center"><span className="text-[8px] font-bold text-white uppercase">Antes</span></div>
+                                            <div className="flex gap-0.5 w-full aspect-[4/3] md:aspect-[3/4]">
+                                                <div className="flex-1 relative h-full">
+                                                    {view.b ? <img src={view.b} className="w-full h-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center text-[9px] text-slate-400 bg-slate-100">Sem Foto</div>}
+                                                    <div className="absolute bottom-0 inset-x-0 bg-black/60 p-1 text-center backdrop-blur-sm"><span className="text-[8px] font-bold text-white uppercase tracking-wider">Antes</span></div>
                                                 </div>
-                                                <div className="flex-1 relative">
-                                                    {view.a ? <img src={view.a} className="w-full h-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center text-[9px] text-slate-400">Sem Foto</div>}
-                                                    <div className="absolute bottom-0 inset-x-0 bg-emerald-900/80 p-1 text-center"><span className="text-[8px] font-bold text-emerald-300 uppercase">Atual</span></div>
+                                                <div className="flex-1 relative h-full">
+                                                    {view.a ? <img src={view.a} className="w-full h-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center text-[9px] text-slate-400 bg-slate-100">Sem Foto</div>}
+                                                    <div className="absolute bottom-0 inset-x-0 bg-emerald-900/80 p-1 text-center backdrop-blur-sm"><span className="text-[8px] font-bold text-emerald-300 uppercase tracking-wider">Atual</span></div>
                                                 </div>
                                             </div>
                                         </div>

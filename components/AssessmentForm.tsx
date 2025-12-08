@@ -20,6 +20,7 @@ const DualInput = ({ label, unit, val1, val2, onChange1, onChange2 }: any) => (
         <input
           type="number"
           step="0.1"
+          inputMode="decimal"
           className="w-full bg-slate-900/30 px-3 py-4 text-slate-400 text-base text-center focus:outline-none placeholder-slate-600 appearance-none"
           placeholder="Antes"
           value={val1 || ''}
@@ -32,6 +33,7 @@ const DualInput = ({ label, unit, val1, val2, onChange1, onChange2 }: any) => (
         <input
           type="number"
           step="0.1"
+          inputMode="decimal"
           className="w-full bg-transparent px-3 py-4 text-white font-bold text-base text-center focus:outline-none placeholder-slate-600 appearance-none"
           placeholder="Atual"
           value={val2 || ''}
@@ -63,6 +65,7 @@ const initialTests: PhysicalTests = {
 
 export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStudentName }) => {
   const [step, setStep] = useState(1);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [data, setData] = useState<AssessmentData>({
     studentName: initialStudentName || '',
     age: 30, height: 170, gender: 'male', goal: 'Hipertrofia', date: new Date().toISOString().split('T')[0],
@@ -85,22 +88,27 @@ export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStu
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setUploadingField(field);
+
     // Validate file
     import('../utils/validation').then(({ validateFileUpload }) => {
       const validation = validateFileUpload(file);
       if (!validation.valid) {
         alert(validation.error || 'Erro ao validar arquivo');
+        setUploadingField(null);
         return;
       }
 
       const reader = new FileReader();
       reader.onerror = () => {
         alert('Erro ao ler o arquivo. Tente novamente.');
+        setUploadingField(null);
       };
       reader.onloadend = () => {
         if (reader.result) {
           setData(prev => ({ ...prev, photos: { ...prev.photos, [field]: reader.result } }));
         }
+        setUploadingField(null);
       };
       reader.readAsDataURL(file);
     });
@@ -131,8 +139,8 @@ export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStu
 
       <StandardInput label="Nome do Aluno" value={data.studentName} onChange={(e) => setData({ ...data, studentName: e.target.value })} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <StandardInput label="Idade" type="number" value={data.age} onChange={(e) => setData({ ...data, age: parseInt(e.target.value) })} />
-        <StandardInput label="Altura (cm)" type="number" value={data.height} onChange={(e) => setData({ ...data, height: parseInt(e.target.value) })} />
+        <StandardInput label="Idade" type="number" inputMode="numeric" value={data.age} onChange={(e) => setData({ ...data, age: parseInt(e.target.value) })} />
+        <StandardInput label="Altura (cm)" type="number" inputMode="numeric" value={data.height} onChange={(e) => setData({ ...data, height: parseInt(e.target.value) })} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Select label="Gênero" value={data.gender} onChange={(e) => setData({ ...data, gender: e.target.value as any })}>
@@ -147,8 +155,8 @@ export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStu
           <option value="Excelente">Excelente</option><option value="Bom">Bom</option><option value="Regular">Regular</option><option value="Baixo">Baixo</option>
         </Select>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <StandardInput label="Adesão (%)" type="number" value={data.adherenceRate} onChange={(e) => setData({ ...data, adherenceRate: parseFloat(e.target.value) })} />
-          <StandardInput label="Treinos (Mês)" type="number" value={data.workoutsPerMonth} onChange={(e) => setData({ ...data, workoutsPerMonth: parseInt(e.target.value) })} />
+          <StandardInput label="Adesão (%)" type="number" inputMode="numeric" value={data.adherenceRate} onChange={(e) => setData({ ...data, adherenceRate: parseFloat(e.target.value) })} />
+          <StandardInput label="Treinos (Mês)" type="number" inputMode="numeric" value={data.workoutsPerMonth} onChange={(e) => setData({ ...data, workoutsPerMonth: parseInt(e.target.value) })} />
         </div>
         <TextArea label="Comentários Gerais" value={data.generalComments} onChange={(e) => setData({ ...data, generalComments: e.target.value })} />
       </div>
@@ -218,29 +226,59 @@ export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStu
     </div>
   );
 
-  const renderStep4 = () => (
-    <div className="animate-fade-in space-y-6">
-      <div className="text-center mb-6"><h3 className="text-xl font-bold text-white">Fotos</h3></div>
-      <div className="grid grid-cols-1 gap-4">
+  const renderStep4 = () => {
+    const photoSections = [
+      { label: 'Frente', keys: { before: 'frontBefore', after: 'frontAfter' } },
+      { label: 'Lateral', keys: { before: 'sideBefore', after: 'sideAfter' } },
+      { label: 'Costas', keys: { before: 'backBefore', after: 'backAfter' } }
+    ];
+
+    return (
+      <div className="animate-fade-in space-y-6">
+        <div className="text-center mb-6"><h3 className="text-xl font-bold text-white">Fotos</h3></div>
         <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 text-center text-slate-500 text-sm">
-          <p>Upload de fotos comparativas (Frente, Lado, Costas).</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            <label className="aspect-square bg-slate-800 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-700 transition relative overflow-hidden group">
-              <span className="text-xs uppercase font-bold relative z-10">Frente (Antes)</span>
-              <input type="file" className="hidden" accept="image/*" onChange={(e) => handlePhoto('frontBefore', e)} />
-              {data.photos.frontBefore && <img src={data.photos.frontBefore} className="absolute inset-0 w-full h-full object-cover rounded-lg" />}
-            </label>
-            <label className="aspect-square bg-slate-800 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-700 transition relative overflow-hidden group">
-              <span className="text-xs uppercase font-bold relative z-10">Frente (Depois)</span>
-              <input type="file" className="hidden" accept="image/*" onChange={(e) => handlePhoto('frontAfter', e)} />
-              {data.photos.frontAfter && <img src={data.photos.frontAfter} className="absolute inset-0 w-full h-full object-cover rounded-lg" />}
-            </label>
+          <p className="mb-4">Upload de fotos comparativas (Antes vs Depois).</p>
+          <div className="space-y-6">
+            {photoSections.map((section) => (
+              <div key={section.label}>
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 text-left pl-1">{section.label}</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {['before', 'after'].map((type) => {
+                    // @ts-ignore
+                    const fieldKey = section.keys[type] as keyof typeof data.photos;
+                    const isUploading = uploadingField === fieldKey;
+
+                    return (
+                      <label key={fieldKey} className={`aspect-[3/4] bg-slate-800 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-700 transition relative overflow-hidden group border border-slate-700 hover:border-slate-500 ${isUploading ? 'opacity-70 pointer-events-none' : ''}`}>
+                        <span className="text-[10px] uppercase font-bold relative z-10 text-slate-500 group-hover:text-white transition-colors">{type === 'before' ? 'Antes' : 'Atual'}</span>
+                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handlePhoto(fieldKey, e)} disabled={isUploading} />
+                        {data.photos[fieldKey] && <img src={data.photos[fieldKey]} className="absolute inset-0 w-full h-full object-cover" />}
+
+                        {/* Empty/Add Indicator */}
+                        {!data.photos[fieldKey] && !isUploading && (
+                          <div className="absolute inset-0 bg-slate-800 group-hover:bg-slate-700 transition-colors flex items-center justify-center">
+                            <span className="text-2xl opacity-20 group-hover:opacity-50 transition-opacity">+</span>
+                          </div>
+                        )}
+
+                        {/* Loading Spinner */}
+                        {isUploading && (
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+                            <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                          </div>
+                        )}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+        <div className="flex gap-3 mt-6"><Button variant="secondary" onClick={prevStep} className="flex-1 py-4">Voltar</Button><Button onClick={nextStep} className="flex-1 py-4">Próximo</Button></div>
       </div>
-      <div className="flex gap-3 mt-6"><Button variant="secondary" onClick={prevStep} className="flex-1 py-4">Voltar</Button><Button onClick={nextStep} className="flex-1 py-4">Próximo</Button></div>
-    </div>
-  );
+    );
+  };
 
   const renderStep5 = () => (
     <div className="animate-fade-in space-y-6">

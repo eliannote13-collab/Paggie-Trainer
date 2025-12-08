@@ -34,10 +34,18 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <PaggieLogo />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
-              PAGGIE <span className="text-transparent bg-clip-text bg-gradient-to-r from-paggie-cyan to-paggie-blue">TRAINER</span>
-            </h1>
-            <p className="text-slate-400 text-[8px] sm:text-[10px] font-bold tracking-[0.3em] uppercase opacity-70">Performance Intelligence</p>
+            <div className="flex flex-col">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
+                PAGGIE <span className="text-transparent bg-clip-text bg-gradient-to-r from-paggie-cyan to-paggie-blue">TRAINER</span>
+              </h1>
+              <div className="flex items-center gap-2 mt-1">
+                <p className="text-slate-400 text-[8px] sm:text-[10px] font-bold tracking-[0.3em] uppercase opacity-70">Performance Intelligence</p>
+                <div className="hidden sm:flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-full">
+                  <span className="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span>
+                  <span className="text-[7px] font-bold text-emerald-400 uppercase tracking-widest">Neural Engine Active</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

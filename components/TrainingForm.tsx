@@ -223,11 +223,11 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
         <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-4 sm:p-6 mb-6">
           <div className="flex justify-between items-start mb-4">
             <h4 className="text-lg font-black text-white flex items-center gap-2">
-              <span className="bg-emerald-500 w-6 h-6 rounded flex items-center justify-center text-xs text-black">{currentWorkout.letter}</span>
+              <span className="bg-emerald-500 w-6 h-6 rounded flex items-center justify-center text-xs text-black shadow-lg shadow-emerald-500/20">{currentWorkout.letter}</span>
               Editor de Sessão
             </h4>
             {data.workouts.length > 1 && (
-              <button onClick={() => removeWorkout(activeTab)} className="text-red-400 text-xs hover:text-red-300 font-bold uppercase">Excluir</button>
+              <button onClick={() => removeWorkout(activeTab)} className="text-red-400 text-xs hover:text-red-300 font-bold uppercase transition-colors">Excluir</button>
             )}
           </div>
 
@@ -241,9 +241,9 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                   <button
                     key={day}
                     onClick={() => toggleDay(activeTab, day)}
-                    className={`w-8 h-8 rounded text-[10px] font-bold uppercase transition-all ${currentWorkout.days.includes(day)
-                      ? 'bg-emerald-500 text-black'
-                      : 'bg-slate-800 text-slate-500 border border-slate-700'
+                    className={`w-8 h-8 rounded text-[10px] font-bold uppercase transition-all duration-300 transform active:scale-95 ${currentWorkout.days.includes(day)
+                      ? 'bg-emerald-500 text-black shadow-emerald-500/20 shadow-md'
+                      : 'bg-slate-800 text-slate-500 border border-slate-700 hover:border-slate-500'
                       }`}
                   >
                     {day}
@@ -257,18 +257,29 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
             <span className="text-xs font-bold uppercase text-slate-500 tracking-wider">Lista de Exercícios</span>
             <button
               onClick={() => setShowLibrary(true)}
-              className="flex items-center gap-1 text-xs font-bold text-violet-400 hover:text-violet-300 bg-violet-500/10 px-3 py-1.5 rounded-full border border-violet-500/30 transition-colors"
+              className="group flex items-center gap-1 text-xs font-bold text-violet-400 hover:text-white bg-violet-500/10 hover:bg-violet-500 px-3 py-1.5 rounded-full border border-violet-500/30 transition-all shadow-sm hover:shadow-violet-500/20"
             >
-              <span>📚</span> Importar da Biblioteca
+              <span className="group-hover:scale-110 transition-transform">📚</span> Importar da Biblioteca
             </button>
           </div>
 
           <div id="exercise-list-container" className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+            {displayedExercises.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-slate-800 rounded-xl bg-slate-900/30">
+                <span className="text-4xl mb-2 opacity-50">🏋️</span>
+                <p className="text-slate-500 font-medium text-sm">Nenhum exercício adicionado</p>
+                <button onClick={() => setShowLibrary(true)} className="mt-2 text-xs text-emerald-400 font-bold hover:underline">
+                  + Importar da Biblioteca
+                </button>
+              </div>
+            )}
+
             {displayedExercises.map((ex, exIndex) => (
-              <div key={ex.id} className="bg-slate-800 p-3 rounded-lg border border-slate-700/50 hover:border-slate-600 transition-colors group relative">
+              <div key={ex.id} className="bg-slate-800 p-3 rounded-lg border border-slate-700/50 hover:border-slate-500 transition-all duration-300 group relative shadow-sm hover:shadow-md">
                 <button
                   onClick={() => removeExercise(activeTab, exIndex)}
-                  className="absolute top-2 right-2 text-slate-600 hover:text-red-400 p-1"
+                  className="absolute top-2 right-2 text-slate-600 hover:text-rose-500 p-1 transition-colors opacity-50 group-hover:opacity-100"
+                  aria-label="Remover exercício"
                 >
                   ×
                 </button>
@@ -289,7 +300,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                   <div className="col-span-4 sm:col-span-2">
                     <label className="text-[9px] text-slate-500 text-center uppercase block mb-1">Séries</label>
                     <input
-                      className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-emerald-400 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none"
+                      className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-emerald-400 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none transition-shadow"
                       placeholder="3"
                       value={ex.sets}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'sets', e.target.value)}
@@ -298,7 +309,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                   <div className="col-span-4 sm:col-span-2">
                     <label className="text-[9px] text-slate-500 text-center uppercase block mb-1">Reps</label>
                     <input
-                      className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-emerald-400 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none"
+                      className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-emerald-400 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none transition-shadow"
                       placeholder="12"
                       value={ex.reps}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'reps', e.target.value)}
@@ -307,7 +318,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                   <div className="col-span-4 sm:col-span-2">
                     <label className="text-[9px] text-slate-500 text-center uppercase block mb-1">Descanso</label>
                     <input
-                      className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-slate-300 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none"
+                      className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-slate-300 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none transition-shadow"
                       placeholder="60s"
                       value={ex.rest}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'rest', e.target.value)}
@@ -318,7 +329,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                   <div className="col-span-12 sm:col-span-6 mt-1">
                     <label className="text-[9px] text-slate-500 uppercase block mb-1">Técnica / Obs</label>
                     <input
-                      className="w-full bg-slate-900/30 rounded px-3 py-3 text-base sm:text-sm text-slate-400 focus:outline-none focus:text-white appearance-none"
+                      className="w-full bg-slate-900/30 rounded px-3 py-3 text-base sm:text-sm text-slate-400 focus:outline-none focus:text-white appearance-none transition-colors focus:bg-slate-900/50"
                       placeholder="Ex: Falha, Drop-set..."
                       value={ex.technique}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'technique', e.target.value)}
@@ -339,7 +350,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
 
           <button
             onClick={() => addExercise(activeTab)}
-            className="w-full py-3 mt-4 border border-dashed border-slate-600 text-slate-400 text-sm font-bold uppercase rounded-lg hover:bg-slate-800 hover:text-white transition-colors"
+            className="w-full py-3 mt-4 border border-dashed border-slate-600 text-slate-400 text-sm font-bold uppercase rounded-lg hover:bg-slate-800 hover:text-white transition-all hover:border-slate-500"
           >
             + Adicionar Exercício Manual
           </button>
@@ -352,7 +363,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
 
         <div className="flex gap-4 mt-6">
           <Button variant="secondary" onClick={() => setStep(1)} className="flex-1 py-4">Voltar</Button>
-          <Button onClick={() => onComplete(data)} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-700 py-4 shadow-lg shadow-emerald-500/30">Gerar PDF</Button>
+          <Button onClick={() => onComplete(data)} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-700 py-4 shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-shadow">Gerar PDF</Button>
         </div>
       </div>
     );

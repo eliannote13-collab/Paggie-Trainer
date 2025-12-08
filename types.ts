@@ -46,7 +46,7 @@ export interface AssessmentData {
   gender: 'male' | 'female';
   goal: string;
   date: string;
-  
+
   // Section 1: General Summary
   commitment: CommitmentLevel;
   adherenceRate: number; // %
@@ -56,7 +56,7 @@ export interface AssessmentData {
   // Comparative Data (Sections 2, 3, 5, 6)
   initial: BodyMetrics;
   current: BodyMetrics;
-  
+
   initialTests: PhysicalTests;
   currentTests: PhysicalTests;
 
@@ -71,7 +71,7 @@ export interface AssessmentData {
   };
 
   // Section 7: Analysis (Input by User or AI)
-  manualTechnicalAnalysis: string; 
+  manualTechnicalAnalysis: string;
 
   // Section 8: Recommendations (Input by User)
   recLoad: string;
@@ -83,35 +83,35 @@ export interface AssessmentData {
 
 // --- PHYSICAL ASSESSMENT (TESTS) TYPES ---
 export interface PhysicalAssessmentData {
-    studentName: string;
-    date: string;
-    age: number;
-    gender: 'Masculino' | 'Feminino';
-    
-    // Cardiorespiratory
-    restingHR: string;
-    vo2Max: string; // Estimated
-    testCooper: string; // Distance in m
+  studentName: string;
+  date: string;
+  age: number;
+  gender: 'Masculino' | 'Feminino';
 
-    // Neuromuscular
-    pushUpTest: string; // Reps
-    sitUpTest: string; // Reps
-    squatTest: string; // Reps
-    plankTest: string; // Time
+  // Cardiorespiratory
+  restingHR: string;
+  vo2Max: string; // Estimated
+  testCooper: string; // Distance in m
 
-    // Flexibility
-    sitAndReach: string; // Wells cm
+  // Neuromuscular
+  pushUpTest: string; // Reps
+  sitUpTest: string; // Reps
+  squatTest: string; // Reps
+  plankTest: string; // Time
 
-    // Postural Analysis
-    postureHead: string; // e.g., "Protrusa"
-    postureShoulders: string; // e.g., "Protusos", "Deprimidos"
-    postureSpine: string; // e.g., "Hipercifose", "Hiperlordose"
-    postureHips: string; // e.g., "Anteversão"
-    postureKnees: string; // e.g., "Valgo", "Varo"
-    postureFeet: string; // e.g., "Plano", "Cavo"
-    
-    // Final
-    considerations: string;
+  // Flexibility
+  sitAndReach: string; // Wells cm
+
+  // Postural Analysis
+  postureHead: string; // e.g., "Protrusa"
+  postureShoulders: string; // e.g., "Protusos", "Deprimidos"
+  postureSpine: string; // e.g., "Hipercifose", "Hiperlordose"
+  postureHips: string; // e.g., "Anteversão"
+  postureKnees: string; // e.g., "Valgo", "Varo"
+  postureFeet: string; // e.g., "Plano", "Cavo"
+
+  // Final
+  considerations: string;
 }
 
 // --- NEW TYPES FOR TRAINING PLAN ---
@@ -161,88 +161,88 @@ export interface LibraryItem {
 
 // --- ANAMNESE TYPES (CLINICAL CHECKLIST) ---
 export interface AnamneseData {
-    // I. Identificação
-    studentName: string;
-    date: string;
-    birthDate: string;
-    age: number;
-    gender: 'Masculino' | 'Feminino' | 'Outro';
-    maritalStatus: string;
-    profession: string;
-    phone: string;
-    email: string;
-    address: string;
+  // I. Identificação
+  studentName: string;
+  date: string;
+  birthDate: string;
+  age: number;
+  gender: 'Masculino' | 'Feminino' | 'Outro';
+  maritalStatus: string;
+  profession: string;
+  phone: string;
+  email: string;
+  address: string;
 
-    // II. Queixa Principal (QP)
-    mainComplaint: string;
-    complaintDuration: string;
-    associatedSymptoms: string;
+  // II. Queixa Principal (QP)
+  mainComplaint: string;
+  complaintDuration: string;
+  associatedSymptoms: string;
 
-    // III. História da Doença Atual (HDA)
-    hdaOnset: string; // Início
-    hdaEvolution: string; // Evolução
-    hdaFactors: string; // Melhora/Piora
-    hdaIntensity: string; // 0-10
-    previousTreatments: string;
+  // III. História da Doença Atual (HDA)
+  hdaOnset: string; // Início
+  hdaEvolution: string; // Evolução
+  hdaFactors: string; // Melhora/Piora
+  hdaIntensity: string; // 0-10
+  previousTreatments: string;
 
-    // IV. História Médica Pregressa
-    chronicDiseases: string; // Diabetes, Hipertensão...
-    surgeries: string;
-    hospitalizations: string;
-    traumas: string;
-    vaccinationStatus: string;
-    allergies: string;
+  // IV. História Médica Pregressa
+  chronicDiseases: string; // Diabetes, Hipertensão...
+  surgeries: string;
+  hospitalizations: string;
+  traumas: string;
+  vaccinationStatus: string;
+  allergies: string;
 
-    // V. Medicamentos
-    medications: string; // Nome, dose, motivo
-    adherence: string; // Toma corretamente?
-    supplements: string;
+  // V. Medicamentos
+  medications: string; // Nome, dose, motivo
+  adherence: string; // Toma corretamente?
+  supplements: string;
 
-    // VI. Antecedentes Familiares
-    familyHistory: string; // Pais, irmãos, doenças hereditárias
+  // VI. Antecedentes Familiares
+  familyHistory: string; // Pais, irmãos, doenças hereditárias
 
-    // VII. Hábitos de Vida
-    smoking: string; // Fuma? Quanto tempo?
-    alcohol: string; // Frequência
-    substances: string; // Outras
-    diet: string; // Padrão alimentar
-    physicalActivity: string; // Atual
-    sleep: string; // Qualidade/Duração
-    stressLevel: string;
-    waterIntake: string; // Ingestão de água
+  // VII. Hábitos de Vida
+  smoking: string; // Fuma? Quanto tempo?
+  alcohol: string; // Frequência
+  substances: string; // Outras
+  diet: string; // Padrão alimentar
+  physicalActivity: string; // Atual
+  sleep: string; // Qualidade/Duração
+  stressLevel: string;
+  waterIntake: string; // Ingestão de água
 
-    // VIII. Revisão por Sistemas
-    systemGeneral: string; // Febre, peso...
-    systemRespiratory: string;
-    systemCardiovascular: string;
-    systemGastro: string;
-    systemNeuro: string;
-    systemPsych: string;
+  // VIII. Revisão por Sistemas
+  systemGeneral: string; // Febre, peso...
+  systemRespiratory: string;
+  systemCardiovascular: string;
+  systemGastro: string;
+  systemNeuro: string;
+  systemPsych: string;
 
-    // IX. Exame Físico
-    bp: string; // Pressão Arterial
-    hr: string; // Freq Cardíaca
-    respRate: string; // Freq Respiratória
-    temp: string; // Temperatura
-    weight: string;
-    height: string;
-    bmi: string; // IMC
-    waistCirc: string;
-    generalInspection: string;
+  // IX. Exame Físico
+  bp: string; // Pressão Arterial
+  hr: string; // Freq Cardíaca
+  respRate: string; // Freq Respiratória
+  temp: string; // Temperatura
+  weight: string;
+  height: string;
+  bmi: string; // IMC
+  waistCirc: string;
+  generalInspection: string;
 
-    // X. Considerações Finais e Plano
-    diagnosisHypothesis: string;
-    requestedExams: string;
-    therapeuticPlan: string; // Conduta
-    nextVisit: string;
+  // X. Considerações Finais e Plano
+  diagnosisHypothesis: string;
+  requestedExams: string;
+  therapeuticPlan: string; // Conduta
+  nextVisit: string;
 }
 
 // --- CHAT TYPES ---
 export interface ChatMessage {
-    id: string;
-    role: 'user' | 'model';
-    text: string;
-    timestamp: number;
+  id: string;
+  role: 'user' | 'model';
+  text: string;
+  timestamp: number;
 }
 
-export type AppStep = 'auth' | 'onboarding' | 'mode-selection' | 'library' | 'assessment' | 'training-form' | 'analyzing' | 'report' | 'training-report' | 'anamnese-form' | 'anamnese-report' | 'physical-assessment-form' | 'physical-assessment-report' | 'chat-paggie';
+export type AppStep = 'auth' | 'onboarding' | 'mode-selection' | 'assessment' | 'analyzing' | 'report' | 'training-form' | 'training-report' | 'library' | 'anamnese-form' | 'anamnese-report' | 'physical-assessment-form' | 'physical-assessment-report' | 'chat-paggie' | 'forgot-password' | 'reset-password';
