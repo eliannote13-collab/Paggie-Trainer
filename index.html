@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paggie Trainer</title>
+    
+    <!-- Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Utilities for PDF/Image Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" referrerpolicy="no-referrer"></script>
+    
+    <!-- COMPILER: Babel Standalone (Critical for .tsx in browser) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- POLYFILL FOR PROCESS.ENV -->
+    <script>
+      window.process = {
+        env: {
+          NODE_ENV: 'production'
+        }
+      };
+    </script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'sans-serif'] },
+            colors: {
+              paggie: {
+                dark: '#0f172a',
+                card: '#1e293b',
+                cyan: '#00AEEF',
+                blue: '#0072BC',
+              }
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body { background-color: #0f172a; color: white; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #0f172a; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #00AEEF; }
+      
+      #app-error-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #0f172a; color: #ef4444;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        font-family: monospace; z-index: 9999; visibility: hidden; text-align: center; padding: 2rem;
+      }
+
+      @media print {
+        @page { size: A4 portrait; margin: 0; }
+        body { background-color: white; color: black; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        .no-print { display: none !important; }
+      }
+    </style>
+    
+    <!-- IMPORT MAP -->
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+
+    <div id="app-error-overlay">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Falha na Inicialização</h2>
+        <p id="error-message">O aplicativo não pôde ser carregado.</p>
+    </div>
+
+    <!-- ENTRY POINT: Note type="text/babel" and data-type="module" -->
+    <script 
+      type="text/babel" 
+      data-type="module" 
+      data-presets="react,typescript"
+      src="./index.tsx">
+    </script>
+
+    <script>
+        window.addEventListener('error', (e) => {
+            if (e.message && e.message.includes('ResizeObserver')) return;
+            console.error("Global Error:", e);
+            const root = document.getElementById('root');
+            if (root && root.childElementCount === 0) {
+                const overlay = document.getElementById('app-error-overlay');
+                if (overlay) {
+                  overlay.style.visibility = 'visible';
+                  const p = overlay.querySelector('p');
+                  if(p) p.innerText = e.message;
+                }
+            }
+        });
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
