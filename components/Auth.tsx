@@ -107,7 +107,7 @@ export const Auth: React.FC<Props> = ({ onForgotPassword }) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="seu@email.com"
+            placeholder="Ex: seu@email.com"
             required
             aria-label="E-mail"
             aria-required="true"
@@ -123,7 +123,7 @@ export const Auth: React.FC<Props> = ({ onForgotPassword }) => {
                   setPasswordValidation(validatePassword(e.target.value));
                 }
               }}
-              placeholder="••••••••"
+              placeholder="Ex: ••••••••"
               required
               aria-label="Senha"
               aria-describedby={isSignUp && passwordValidation ? "password-help" : undefined}

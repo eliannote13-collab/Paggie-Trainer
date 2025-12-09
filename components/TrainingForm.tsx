@@ -39,10 +39,10 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
   const [step, setStep] = useState(1);
   const [data, setData] = useState<TrainingPlanData>({
     studentName: initialData?.studentName || '',
-    goal: initialData?.goal || 'Hipertrofia',
+    goal: initialData?.goal || '',
     startDate: new Date().toISOString().split('T')[0],
-    durationWeeks: 4,
-    splitType: 'ABC',
+    durationWeeks: '' as any, // Initialize empty
+    splitType: '',
     frequencyComments: '',
     workouts: [emptyWorkout('A'), emptyWorkout('B'), emptyWorkout('C')]
   });
@@ -290,7 +290,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                     <label className="text-[10px] text-slate-500 font-bold uppercase mb-1 block">Exercício</label>
                     <input
                       className="w-full bg-transparent text-white font-bold placeholder-slate-600 focus:outline-none text-base border-b border-slate-700/50 pb-2 focus:border-emerald-500 transition-colors appearance-none"
-                      placeholder="Nome do Exercício"
+                      placeholder="Ex: Supino Reto"
                       value={ex.name}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'name', e.target.value)}
                     />
@@ -301,7 +301,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                     <label className="text-[9px] text-slate-500 text-center uppercase block mb-1">Séries</label>
                     <input
                       className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-emerald-400 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none transition-shadow"
-                      placeholder="3"
+                      placeholder="Ex: 4"
                       value={ex.sets}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'sets', e.target.value)}
                     />
@@ -310,7 +310,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                     <label className="text-[9px] text-slate-500 text-center uppercase block mb-1">Reps</label>
                     <input
                       className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-emerald-400 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none transition-shadow"
-                      placeholder="12"
+                      placeholder="Ex: 12"
                       value={ex.reps}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'reps', e.target.value)}
                     />
@@ -319,7 +319,7 @@ export const TrainingForm: React.FC<Props> = ({ onComplete, onBack, initialData 
                     <label className="text-[9px] text-slate-500 text-center uppercase block mb-1">Descanso</label>
                     <input
                       className="w-full bg-slate-900/50 rounded px-2 py-3 text-base sm:text-sm text-slate-300 font-mono text-center focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none transition-shadow"
-                      placeholder="60s"
+                      placeholder="Ex: 60s"
                       value={ex.rest}
                       onChange={(e) => updateExercise(activeTab, exIndex, 'rest', e.target.value)}
                     />

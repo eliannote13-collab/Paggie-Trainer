@@ -52,15 +52,15 @@ interface Props {
 }
 
 const initialMetrics: BodyMetrics = {
-  weight: 0, bodyFat: 0, neck: 0, shoulders: 0, chest: 0,
-  armRight: 0, armLeft: 0, forearmRight: 0, forearmLeft: 0,
-  waist: 0, abdomen: 0, hips: 0, thighRight: 0, thighLeft: 0,
-  calfRight: 0, calfLeft: 0
+  weight: '' as any, bodyFat: '' as any, neck: '' as any, shoulders: '' as any, chest: '' as any,
+  armRight: '' as any, armLeft: '' as any, forearmRight: '' as any, forearmLeft: '' as any,
+  waist: '' as any, abdomen: '' as any, hips: '' as any, thighRight: '' as any, thighLeft: '' as any,
+  calfRight: '' as any, calfLeft: '' as any
 };
 
 const initialTests: PhysicalTests = {
-  pushups: 0, squats: 0, plank: 0, pullups: 0,
-  restingHR: 0, run12min: 0, pace: '0:00'
+  pushups: '' as any, squats: '' as any, plank: '' as any, pullups: '' as any,
+  restingHR: '' as any, run12min: '' as any, pace: '0:00'
 };
 
 export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStudentName }) => {
@@ -68,8 +68,8 @@ export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStu
   const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [data, setData] = useState<AssessmentData>({
     studentName: initialStudentName || '',
-    age: 30, height: 170, gender: 'male', goal: 'Hipertrofia', date: new Date().toISOString().split('T')[0],
-    commitment: 'Bom', adherenceRate: 85, workoutsPerMonth: 16, generalComments: '',
+    age: '' as any, height: '' as any, gender: '' as any, goal: '', date: new Date().toISOString().split('T')[0],
+    commitment: '' as any, adherenceRate: '' as any, workoutsPerMonth: '' as any, generalComments: '',
     initial: { ...initialMetrics }, current: { ...initialMetrics },
     initialTests: { ...initialTests }, currentTests: { ...initialTests },
     photos: {}, manualTechnicalAnalysis: '', manualConclusion: '',
@@ -139,24 +139,26 @@ export const AssessmentForm: React.FC<Props> = ({ onComplete, onBack, initialStu
 
       <StandardInput label="Nome do Aluno" value={data.studentName} onChange={(e) => setData({ ...data, studentName: e.target.value })} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <StandardInput label="Idade" type="number" inputMode="numeric" value={data.age} onChange={(e) => setData({ ...data, age: parseInt(e.target.value) })} />
-        <StandardInput label="Altura (cm)" type="number" inputMode="numeric" value={data.height} onChange={(e) => setData({ ...data, height: parseInt(e.target.value) })} />
+        <StandardInput label="Idade" type="number" inputMode="numeric" value={data.age} onChange={(e) => setData({ ...data, age: e.target.value === '' ? '' : parseInt(e.target.value) as any })} placeholder="Ex: 30" />
+        <StandardInput label="Altura (cm)" type="number" inputMode="numeric" value={data.height} onChange={(e) => setData({ ...data, height: e.target.value === '' ? '' : parseInt(e.target.value) as any })} placeholder="Ex: 175" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Select label="Gênero" value={data.gender} onChange={(e) => setData({ ...data, gender: e.target.value as any })}>
+          <option value="" disabled>Selecione</option>
           <option value="male">Masculino</option><option value="female">Feminino</option>
         </Select>
-        <StandardInput label="Objetivo Principal" value={data.goal} onChange={(e) => setData({ ...data, goal: e.target.value })} />
+        <StandardInput label="Objetivo Principal" value={data.goal} onChange={(e) => setData({ ...data, goal: e.target.value })} placeholder="Ex: Hipertrofia" />
       </div>
 
       <div className="bg-slate-900/50 p-5 rounded-2xl border border-slate-800 shadow-sm space-y-4">
         <h4 className="text-xs font-black text-paggie-cyan uppercase tracking-widest mb-2">Engajamento</h4>
         <Select label="Comprometimento" value={data.commitment} onChange={(e) => setData({ ...data, commitment: e.target.value as any })}>
+          <option value="" disabled>Selecione</option>
           <option value="Excelente">Excelente</option><option value="Bom">Bom</option><option value="Regular">Regular</option><option value="Baixo">Baixo</option>
         </Select>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <StandardInput label="Adesão (%)" type="number" inputMode="numeric" value={data.adherenceRate} onChange={(e) => setData({ ...data, adherenceRate: parseFloat(e.target.value) })} />
-          <StandardInput label="Treinos (Mês)" type="number" inputMode="numeric" value={data.workoutsPerMonth} onChange={(e) => setData({ ...data, workoutsPerMonth: parseInt(e.target.value) })} />
+          <StandardInput label="Adesão (%)" type="number" inputMode="numeric" value={data.adherenceRate} onChange={(e) => setData({ ...data, adherenceRate: e.target.value === '' ? '' : parseFloat(e.target.value) as any })} placeholder="Ex: 95" />
+          <StandardInput label="Treinos (Mês)" type="number" inputMode="numeric" value={data.workoutsPerMonth} onChange={(e) => setData({ ...data, workoutsPerMonth: e.target.value === '' ? '' : parseInt(e.target.value) as any })} placeholder="Ex: 20" />
         </div>
         <TextArea label="Comentários Gerais" value={data.generalComments} onChange={(e) => setData({ ...data, generalComments: e.target.value })} />
       </div>
